@@ -3,54 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bunny Wife Clicker</title>
     <style>
         body { margin: 0; background-image: url('moon1.png'); background-size: cover; font-family: sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-        .container { background: rgba(0, 0, 0, 0.75); padding: 15px; border-radius: 20px; text-align: center; width: 85%; border: 2px solid #ff00ff; }
-        #bunny-character { width: 200px; margin: 10px 0; transition: 0.1s; }
-        .stats { font-size: 28px; font-weight: bold; color: #ff00ff; }
-        .click-btn { background: linear-gradient(45deg, #ff00ff, #00ffff); border: none; padding: 12px 25px; border-radius: 50px; color: white; font-weight: bold; width: 100%; box-shadow: 0 0 15px #ff00ff; }
-        .ad-link { color: #00ffff; font-size: 12px; cursor: pointer; display: block; margin: 10px 0; text-decoration: underline; }
-        .shop { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; font-size: 11px; }
-        #notif { color: #ffff00; font-weight: bold; height: 20px; margin-bottom: 5px; }
+        .container { background: rgba(0, 0, 0, 0.8); padding: 15px; border-radius: 20px; text-align: center; width: 85%; border: 2px solid #ff00ff; }
+        #bunny-character { width: 180px; margin: 10px 0; transition: 0.1s; }
+        .stats { font-size: 24px; font-weight: bold; color: #ff00ff; }
+        .btn { background: linear-gradient(45deg, #ff00ff, #00ffff); border: none; padding: 10px; border-radius: 10px; color: white; font-weight: bold; width: 100%; margin: 5px 0; box-shadow: 0 0 10px #ff00ff; cursor: pointer; }
+        .inventory { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 12px; max-height: 80px; overflow-y: auto; }
+        #notif { color: #ffff00; font-weight: bold; height: 20px; margin-bottom: 5px; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="stats">LOVE: <span id="count">0</span></div>
         <div id="notif"></div>
+        <div class="stats">LOVE: <span id="count">0</span></div>
 
-       <img src="https://raw.githubusercontent.com/EvieEnchanted/BunnyWifeBot/main/image_a700cb.png" id="bunny-character" alt="Bunny Wife">
+        <img src="https://raw.githubusercontent.com/EvieEnchanted/BunnyWifeBot/main/image_a700cb.png" id="bunny-character" alt="Bunny Wife">
         
-        <button class="click-btn" onclick="addLove()">CLICK TO LOVE</button>
-        
-        <div class="ad-link" onclick="alert('Ad loading...')">📺 Watch Ad for +50 Love</div>
+        <button class="btn" onclick="addLove()">💖 CLICK TO LOVE</button>
+        <button class="btn" style="background: #444;" onclick="showAd()">📺 WATCH AD (+50)</button>
 
-        <div class="shop">
-            <strong>BUNNY SHOP</strong><br>
-            <button onclick="alert('Opening Shop...')">Buy Heart Potion ($0.99)</button>
+        <div class="inventory">
+            <strong>MY WARDROBE:</strong>
+            <div id="items">Empty...</div>
+        </div>
+
+        <div style="margin-top:10px; font-size: 11px;">
+            <strong>SHOP:</strong>
+            <button onclick="buy('Potion')">Buy Heart Potion ($0.99)</button>
         </div>
     </div>
 
     <script>
         let love = 0;
+        let inventory = [];
+
         function addLove() {
             love++;
-            document.getElementById('count').innerText = love;
+            update();
             
             let roll = Math.random();
-            // 0.05% STEEP RATIO for Legendary
+            // STEEP RATIO: 0.05% for Legendary
             if(roll < 0.0005) {
-                document.getElementById('notif').innerText = "🏆 LEGENDARY: CYBER BOMBER!";
+                unlockItem("🏆 LEGENDARY: Cyber Bomber");
             } else if (roll < 0.05) {
-                document.getElementById('notif').innerText = "✨ Common Item Found!";
+                unlockItem("✨ Common: Pink Ribbon");
             }
 
             const img = document.getElementById('bunny-character');
             img.style.transform = 'scale(1.1)';
             setTimeout(() => img.style.transform = 'scale(1)', 100);
         }
+
+        function unlockItem(name) {
+            if(!inventory.includes(name)) {
+                inventory.push(name);
+                document.getElementById('notif').innerText = "NEW DROP: " + name;
+                renderInventory();
+                setTimeout(() => document.getElementById('notif').innerText = "", 4000);
+            }
+        }
+
+        function renderInventory() {
+            document.getElementById('items').innerText = inventory.join(", ");
+        }
+
+        function showAd() {
+            alert("Playing Ad...");
+            love += 50;
+            update();
+        }
+
+        function buy(item) {
+            alert("Redirecting to Quick Pay for " + item);
+        }
+
+        function update() {
+            document.getElementById('count').innerText = love;
+        }
     </script>
 </body>
 </html>
-
