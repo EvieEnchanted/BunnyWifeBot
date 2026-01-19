@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bunny Wife Clicker - Banana Style</title>
+    <style>
+        /* Your "Banana" Aesthetic CSS */
+        body, html { margin: 0; padding: 0; overflow: hidden; background: #0f0f1b; }
+        
+        #game-container {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1b 100%); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+        }
+
+        #bunny-display {
+            background: rgba(255, 255, 255, 0.05); 
+            border-radius: 30px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            text-align: center;
+            min-width: 320px;
+            transition: 0.2s;
+        }
+
+        /* The Bunny Sprite */
+        #bunny-sprite {
+            font-size: 100px;
+            margin: 20px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.1s;
+            user-select: none;
+        }
+        #bunny-sprite:active { transform: scale(1.15); }
+
+        #click-btn {
+            margin-top: 30px;
+            background: #ff00ff; 
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .timer-text { color: #00ffff; font-size: 0.8rem; margin-top: 10px; font-family: monospace; }
+        .inventory-log { font-size: 0.9rem; margin-top: 20px; color: #ff00ff; min-height: 1.2em; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="bunny-display">
+        <div style="font-size: 2rem; font-weight: bold; color: #ff00ff;">LOVE: <span id="score">0</span></div>
+        
+        <div id="bunny-sprite" onclick="handleClick()">🐰</div>
+        
+        <div class="timer-text">NEXT DROP IN: <span id="timer">03:00</span></div>
+        
+        <button id="click-btn" onclick="handleClick()">Click to Love</button>
+        
+        <div class="inventory-log" id="drop-msg"></div>
+    </div>
+</div>
+
+<script>
+    let clicks = 0;
+    let secondsToDrop = 180; // 3 minutes like the real Banana game
+    
+    // Your Loot Pools
+    const hairPool = ["Silver_Long", "Cyan_Bob", "Pink_Ponytail"];
+    const outfitPool = ["PVC_Coat", "Carbon_Suit", "Chrome_Corset"];
+    const bgPool = ["Rainy_Street", "Neon_Market", "Holo_Park"];
+
+    function handleClick() {
+        clicks++;
+        document.getElementById('score').innerText = clicks;
+    }
+
+    // The "Banana" Logic: Drops are based on TIME, not just clicks
+    setInterval(() => {
+        if (secondsToDrop > 0) {
+            secondsToDrop--;
+            let mins = Math.floor(secondsToDrop / 60);
+            let secs = secondsToDrop % 60;
+            document.getElementById('timer').innerText = 
+                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        } else {
+            generateLuckyBunny();
+            secondsToDrop = 180; // Reset timer
+        }
+    }, 1000);
+
+    function generateLuckyBunny() {
+        let hair = hairPool[Math.floor(Math.random() * hairPool.length)];
+        let outfit = outfitPool[Math.floor(Math.random() * outfitPool.length)];
+        let bg = bgPool[Math.floor(Math.random() * bgPool.length)];
+
+        document.getElementById('drop-msg').innerText = `NEW DROP: ${hair} + ${outfit}!`;
+        
+        // Visual "Flash" like the Banana game
+        document.getElementById('bunny-display').style.boxShadow = "0 0 50px #ff00ff";
+        setTimeout(() => {
+            document.getElementById('bunny-display').style.boxShadow = "0 20px 50px rgba(0,0,0,0.5)";
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
+
+// --- THE 300+ COSMETIC ENGINE ---
+
+const bunnyLoot = {
+    ears: ["Classic_Pink", "Cyber_Antenna", "Goth_Pierced", "Floppy_White", "Hollo_Glass", "Burnt_Edge", "Lace_Trim", "Mechanical_Steel"],
+    hair: ["Silver_Long", "Cyan_Bob", "Pink_Ponytail", "Neon_Mullet", "Goth_Pigtails", "Flame_Red", "Pixel_Fade", "Royal_Gold"],
+    clothes: ["PVC_Coat", "Carbon_Suit", "Chrome_Corset", "Oversized_Hoodie", "Cyber_Kimono", "Battle_Leotard", "Tech_Cloak"],
+    eyes: ["Heart_Pupils", "Neon_Glow", "Dead_Pixel", "Cat_Eye", "Galaxy_Iris", "X_Stitched"],
+    lips: ["Matte_Black", "Neon_Pink", "Gold_Leaf", "Blood_Stain", "Electric_Blue"],
+    body: ["Pale_Porcelain", "Doll_Joints", "Circuit_Tattoos", "Hologram_Skin", "Sun_Kissed"],
+    attachments: ["Floating_Carrot", "Cyber_Mask", "Angel_Wings", "Barbed_Wire", "Holo_Shield"],
+    bg: ["Rainy_Street", "Neon_Market", "Holo_Park", "Synth_Sunset", "Abandoned_Lab", "Moonlight_Roof"]
+};
+
+// This function now pulls from 8 different spots!
+function generateUltimateBunny() {
+    let roll = {
+        ears: bunnyLoot.ears[Math.floor(Math.random() * bunnyLoot.ears.length)],
+        hair: bunnyLoot.hair[Math.floor(Math.random() * bunnyLoot.hair.length)],
+        outfit: bunnyLoot.clothes[Math.floor(Math.random() * bunnyLoot.clothes.length)],
+        eyes: bunnyLoot.eyes[Math.floor(Math.random() * bunnyLoot.eyes.length)],
+        lips: bunnyLoot.lips[Math.floor(Math.random() * bunnyLoot.lips.length)],
+        body: bunnyLoot.body[Math.floor(Math.random() * bunnyLoot.body.length)],
+        extra: bunnyLoot.attachments[Math.floor(Math.random() * bunnyLoot.attachments.length)],
+        view: bunnyLoot.bg[Math.floor(Math.random() * bunnyLoot.bg.length)]
+    };
+
+    console.log("YOU UNLOCKED A RARE VARIATION:", roll);
+    return roll;
+}
