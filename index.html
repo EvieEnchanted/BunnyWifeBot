@@ -84,3 +84,48 @@
     </script>
 </body>
 </html>
+<script>
+    let love = 0;
+    let inventory = [];
+    
+    // The "Master List" of your items
+    const itemsList = [
+        { name: "🏆 LEGENDARY: Cyber Bomber", id: "layer-bomber", chance: 0.0005, file: "body_bomber_01.png" },
+        { name: "🏆 LEGENDARY: Angel Wings", id: "layer-wings", chance: 0.0005, file: "back_wings_01.png" },
+        { name: "✨ RARE: Devil Horns", id: "layer-horns", chance: 0.01, file: "head_horns_01.png" },
+        { name: "🌸 COMMON: Cyber-Thong", id: "layer-thong", chance: 0.10, file: "body_thong_01.png" }
+    ];
+
+    function addLove() {
+        love++;
+        document.getElementById('count').innerText = love;
+        
+        let roll = Math.random();
+        
+        itemsList.forEach(item => {
+            if (roll < item.chance && !inventory.includes(item.name)) {
+                unlockItem(item);
+            }
+        });
+
+        // Bounce effect for all active layers
+        const images = document.querySelectorAll('.layer');
+        images.forEach(img => {
+            img.style.transform = 'scale(1.1)';
+            setTimeout(() => img.style.transform = 'scale(1)', 100);
+        });
+    }
+
+    function unlockItem(item) {
+        inventory.push(item.name);
+        document.getElementById('notif').innerText = "NEW DROP: " + item.name;
+        document.getElementById('items').innerText = inventory.join(", ");
+        
+        // This part "turns on" the clothing layer visually
+        const layerElement = document.getElementById(item.id);
+        if (layerElement) {
+            layerElement.src = "https://raw.githubusercontent.com/EvieEnchanted/BunnyWifeBot/main/" + item.file;
+            layerElement.style.display = 'block';
+        }
+    }
+</script>
