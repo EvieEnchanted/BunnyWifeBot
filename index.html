@@ -3,77 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bunny Wife Pro</title>
+    <title>Bunny Wife Clicker</title>
     <style>
         body { margin: 0; background-image: url('moon1.png'); background-size: cover; font-family: sans-serif; color: white; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-        .container { background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(10px); padding: 15px; border-radius: 20px; text-align: center; width: 85%; border: 2px solid #ff00ff; position: relative; }
-        #bunny-character { width: 180px; margin: 10px 0; transition: 0.1s; }
-        .stats { font-size: 28px; font-weight: bold; color: #ff00ff; text-shadow: 0 0 10px #ff00ff; }
-        .click-btn { background: linear-gradient(45deg, #ff00ff, #00ffff); border: none; padding: 12px 25px; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 0 15px #ff00ff; margin-bottom: 10px; width: 100%; }
-        
-        /* Shop & Ad Styles */
-        .shop-box { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 12px; }
-        .ad-link { color: #00ffff; text-decoration: underline; font-size: 12px; cursor: pointer; display: block; margin-bottom: 10px; }
-        #notif { color: #ffff00; font-size: 14px; height: 20px; font-weight: bold; }
+        .container { background: rgba(0, 0, 0, 0.75); padding: 15px; border-radius: 20px; text-align: center; width: 85%; border: 2px solid #ff00ff; }
+        #bunny-character { width: 200px; margin: 10px 0; transition: 0.1s; }
+        .stats { font-size: 28px; font-weight: bold; color: #ff00ff; }
+        .click-btn { background: linear-gradient(45deg, #ff00ff, #00ffff); border: none; padding: 12px 25px; border-radius: 50px; color: white; font-weight: bold; width: 100%; box-shadow: 0 0 15px #ff00ff; }
+        .ad-link { color: #00ffff; font-size: 12px; cursor: pointer; display: block; margin: 10px 0; text-decoration: underline; }
+        .shop { background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; font-size: 11px; }
+        #notif { color: #ffff00; font-weight: bold; height: 20px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="stats">LOVE: <span id="count">0</span></div>
         <div id="notif"></div>
-        
-        <img src="image_a700cb.png.png" id="bunny-character" alt="Bunny Wife">
+
+        <img src="image_a700cb.png" id="bunny-character" alt="Bunny Wife">
         
         <button class="click-btn" onclick="addLove()">CLICK TO LOVE</button>
         
-        <div class="ad-link" onclick="showAd()">📺 Watch Ad for +50 Love</div>
+        <div class="ad-link" onclick="alert('Ad loading...')">📺 Watch Ad for +50 Love</div>
 
-        <div class="shop-box">
-            <strong>BUNNY SHOP (Quick Buy)</strong><br>
-            <button onclick="buyItem('Heart Potion', 10)" style="font-size:10px;">Buy Heart Potion ($0.99)</button>
-            <button onclick="buyItem('Neon Collar', 25)" style="font-size:10px;">Buy Neon Collar ($1.99)</button>
+        <div class="shop">
+            <strong>BUNNY SHOP</strong><br>
+            <button onclick="alert('Opening Shop...')">Buy Heart Potion ($0.99)</button>
         </div>
     </div>
 
     <script>
         let love = 0;
-
         function addLove() {
             love++;
-            updateDisplay();
+            document.getElementById('count').innerText = love;
             
             let roll = Math.random();
-            // STEEP RATIO: 0.1% chance for Legendary
-            if(roll < 0.001) {
-                showNotif("🏆 LEGENDARY DROP: CYBER JACKET!");
+            // 0.05% STEEP RATIO for Legendary
+            if(roll < 0.0005) {
+                document.getElementById('notif').innerText = "🏆 LEGENDARY: CYBER BOMBER!";
             } else if (roll < 0.05) {
-                showNotif("✨ Common Item Found!");
+                document.getElementById('notif').innerText = "✨ Common Item Found!";
             }
 
             const img = document.getElementById('bunny-character');
             img.style.transform = 'scale(1.1)';
             setTimeout(() => img.style.transform = 'scale(1)', 100);
-        }
-
-        function showAd() {
-            alert("Ad Loading... (In a real app, this links to Adsgram)");
-            love += 50;
-            updateDisplay();
-            showNotif("Rewarded: +50 Love!");
-        }
-
-        function buyItem(name, amount) {
-            alert("Opening Telegram Payment for " + name);
-            // This is where we link the Telegram Stars/Invoice API later
-        }
-
-        function showNotif(text) {
-            document.getElementById('notif').innerText = text;
-            setTimeout(() => document.getElementById('notif').innerText = "", 3000);
-        }
-
-        function updateDisplay() {
-            document.getElementById('count').innerText = love;
         }
     </script>
 </body>
